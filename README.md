@@ -4,3 +4,5 @@
 
 
 https://youtu.be/nAh_Kx5Zh5Q?si=dpVx5fWpXHT9e_Ed
+
+The initial push to this repository containing "The Beginning" and "The Beginning v2" are all content in the tutorial video up to the 5:33:18 mark which is the effective ending for lighting and its usage(s).
