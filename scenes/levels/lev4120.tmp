@@ -1,0 +1,19 @@
+[gd_scene load_steps=5 format=3 uid="uid://c3f41xn18glc3"]
+
+[ext_resource type="Script" path="res://scenes/levels/level.gd" id="1_kx5ic"]
+[ext_resource type="PackedScene" uid="uid://bcert7iu6n58a" path="res://scenes/player/player.tscn" id="2_txlb5"]
+[ext_resource type="PackedScene" uid="uid://bcqb0nrhesg7y" path="res://scenes/objects/closed_box/closed_box.tscn" id="4_1ojhu"]
+[ext_resource type="PackedScene" uid="uid://oyvsv50i2llv" path="res://scenes/objects/bed/bed.tscn" id="4_6qv55"]
+
+[node name="Level" type="Node2D"]
+script = ExtResource("1_kx5ic")
+
+[node name="Bed" parent="." instance=ExtResource("4_6qv55")]
+position = Vector2(946, 131)
+
+[node name="ClosedBox" parent="." instance=ExtResource("4_1ojhu")]
+position = Vector2(1067, 441)
+rotation = 1.5708
+
+[node name="Player" parent="." instance=ExtResource("2_txlb5")]
+position = Vector2(510, 206)

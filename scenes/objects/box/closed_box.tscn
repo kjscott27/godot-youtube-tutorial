@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://bcqb0nrhesg7y"]
+
+[ext_resource type="Texture2D" uid="uid://b0n036gsgedg7" path="res://graphics/objects/box/lid.png" id="1_2f58w"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xnbv6"]
+size = Vector2(344, 160)
+
+[node name="ClosedBox" type="StaticBody2D"]
+collision_layer = 4
+collision_mask = 11
+
+[node name="ClosedBoxModel" type="Sprite2D" parent="."]
+texture = ExtResource("1_2f58w")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_xnbv6")

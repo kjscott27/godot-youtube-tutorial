@@ -1,19 +1,72 @@
-[gd_scene load_steps=4 format=3 uid="uid://bcert7iu6n58a"]
+[gd_scene load_steps=9 format=3 uid="uid://bcert7iu6n58a"]
 
 [ext_resource type="Texture2D" uid="uid://cbx3gnsoy5vdq" path="res://graphics/player/player.png" id="1_5t0h0"]
-[ext_resource type="Texture2D" uid="uid://dphom6t8ucm4c" path="res://graphics/projectiles/blue.png" id="2_eto8b"]
-[ext_resource type="Texture2D" uid="uid://cm104if7dkr6i" path="res://graphics/projectiles/grenade.png" id="3_86o38"]
+[ext_resource type="Script" path="res://scenes/player/player.gd" id="1_55dce"]
+[ext_resource type="Texture2D" uid="uid://q4f2i24wi48a" path="res://graphics/decals/white.png" id="3_2xly6"]
 
-[node name="Player" type="Node2D"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_vghyk"]
+radius = 69.0072
 
-[node name="PlayerModel" type="Sprite2D" parent="."]
+[sub_resource type="Gradient" id="Gradient_ara78"]
+colors = PackedColorArray(9.2411e-06, 0.856171, 0.856624, 0.8, 0.870588, 1, 0.996078, 0.0784314)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_eaxuo"]
+gradient = SubResource("Gradient_ara78")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_2t1bw"]
+particle_flag_disable_z = true
+spread = 10.0
+initial_velocity_min = 850.0
+initial_velocity_max = 1200.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.3
+color = Color(0.164706, 1, 1, 1)
+color_ramp = SubResource("GradientTexture1D_eaxuo")
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_e3qbq"]
+polygon = PackedVector2Array(42, -29, 47, -29, 50, -28, 53, -26, 58, -22, 63, -16, 69, -11, 73, -10, 79, -12, 81, -12, 90, -5, 100, -4, 103, -2, 106, 1, 109, 1, 116, 1, 121, 5, 125, 8, 127, 13, 127, 20, 126, 27, 124, 32, 120, 33, 118, 32, 116, 36, 113, 37, 105, 37, 102, 34, 99, 38, 94, 44, 90, 44, 90, 48, 90, 50, 89, 52, 87, 53, 60, 53, 54, 53, 52, 49, 52, 45, 55, 41, 38, 41, 36, 39, 30, 43, 17, 47, 5, 54, -10, 59, -15, 59, -24, 60, -36, 58, -43, 51, -44, 44, -49, 38, -50, 34, -51, 32, -57, 27, -59, 20, -57, 18, -58, 15, -64, 11, -66, 4, -67, -5, -67, -16, -66, -22, -63, -27, -61, -32, -59, -37, -53, -44, -44, -47, -39, -47, -37, -46, -35, -48, -34, -51, -32, -53, -27, -56, -24, -57, -22, -57, -19, -58, -16, -57, -13, -58, -8, -59, -3, -60, 1, -60, 5, -59, 10, -61, 17, -61, 21, -60, 25, -55, 27, -52, 29, -48, 32, -46, 35, -44, 38, -41, 38, -39, 37, -38, 40, -34)
+
+[node name="Player" type="CharacterBody2D"]
+collision_mask = 31
+script = ExtResource("1_55dce")
+
+[node name="PlayerSprite" type="Sprite2D" parent="."]
+position = Vector2(30, 0)
+rotation = 1.5708
 texture = ExtResource("1_5t0h0")
 
-[node name="LaserModel" type="Sprite2D" parent="PlayerModel"]
-position = Vector2(17, -196)
-texture = ExtResource("2_eto8b")
+[node name="PlayerCollision" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_vghyk")
 
-[node name="GrenadeModel" type="Sprite2D" parent="PlayerModel"]
-position = Vector2(-71, -36)
-scale = Vector2(0.3, 0.3)
-texture = ExtResource("3_86o38")
+[node name="PrimaryFireTimer" type="Timer" parent="."]
+wait_time = 0.25
+one_shot = true
+
+[node name="AltFireTimer" type="Timer" parent="."]
+wait_time = 2.5
+one_shot = true
+
+[node name="LaserStartPositions" type="Node2D" parent="."]
+
+[node name="LaserStartPosition1" type="Marker2D" parent="LaserStartPositions"]
+position = Vector2(120, 27)
+
+[node name="LaserStartPosition2" type="Marker2D" parent="LaserStartPositions"]
+position = Vector2(123, 18)
+
+[node name="LaserStartPosition3" type="Marker2D" parent="LaserStartPositions"]
+position = Vector2(121, 10)
+
+[node name="WeaponParticles" type="GPUParticles2D" parent="."]
+position = Vector2(123, 19)
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_2t1bw")
+texture = ExtResource("3_2xly6")
+lifetime = 0.2
+one_shot = true
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource("OccluderPolygon2D_e3qbq")
+
+[connection signal="timeout" from="PrimaryFireTimer" to="." method="_on_primary_fire_timer_timeout"]
+[connection signal="timeout" from="AltFireTimer" to="." method="_on_alt_fire_timer_timeout"]
