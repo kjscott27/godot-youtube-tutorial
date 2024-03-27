@@ -6,17 +6,22 @@ signal secondary_fire(pos, direction)
 var can_primary_fire: bool = true
 var can_alt_fire: bool = true
 
+@export var max_speed: int = 500
+var speed: int = max_speed
+
 func _process(_delta):
 	var direction: Vector2 = Input.get_vector("Move Left", "Move Right", "Move Forward", "Move Back")
 	var is_sprinting: bool = Input.is_action_pressed("Sprint")
 	var is_primary_firing: bool = Input.is_action_pressed("Fire") and can_primary_fire
 	var is_secondary_firing: bool = Input.is_action_pressed("Secondary Fire") and can_alt_fire
 	var player_direction = (get_global_mouse_position() - position).normalized()
-	var speed: int = 300
 	
 	# Player Movement
 	if is_sprinting:
-		speed = 500
+		speed = 750
+	else:
+		speed = max_speed
+		
 	set_velocity(direction * speed)
 	move_and_slide()
 	
